@@ -1,8 +1,12 @@
 ### NodeJs 版本 测试号推送消息卡片
 
-#### 测试号地址
+#### 所需地址
 
+测试号地址
 https://mp.weixin.qq.com/debug/cgi-bin/sandboxinfo?action=showinfo&t=sandbox/index
+
+天气接口文档
+https://yiketianqi.com/index/doc?version=day
 
 #### 使用说明
 
@@ -30,7 +34,7 @@ node-serve
 │  │  ├─ Birthday.js 生日配置
 │  │  ├─ Dto.js
 │  │  └─ index.js 配置文件
-│  ├─ index.js
+│  ├─ index.js 配置颜色值
 │  └─ util
 │     ├─ index.js
 │     └─ request.js

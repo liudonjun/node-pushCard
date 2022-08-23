@@ -42,7 +42,7 @@ function sendCard(flag) {
     obj['tem'] = new Dto(res1.data.tem_night + '~' + res1.data.tem_day + '℃', '#ddd') //温度
     obj['win'] = new Dto(res1.data.win + ` ${res1.data.win_speed} ${res1.data.win_meter}`, '#ddd') //风速
     obj['humidity'] = new Dto(res1.data.humidity, '#ddd') //空气湿度
-    obj['word'] = new Dto(res3.data.data.text, '#fff') //彩虹皮
+    obj['word'] = new Dto(res3.data.data.text, '#ccc') //彩虹皮
     obj['Together'] = new Dto(Math.ceil((new Date() - new Date('2022-8-16')) / 1000 / 60 / 60 / 24), '#fff') //在一起多少天
     obj['gridBirthday'] = new Dto(new Birthday().getGridNumber(new Date().getFullYear()), '#fff') //baby
     obj['boyBirthday'] = new Dto(new Birthday().getBoyNumber(new Date().getFullYear()), '#fff') //me

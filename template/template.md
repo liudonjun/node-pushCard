@@ -5,9 +5,10 @@
 温度:{{tem.DATA}}
 风速:{{win.DATA}}
 湿度:{{humidity.DATA}}
-{{Together.DATA}}
-{{gridBirthday.DATA}}
-{{boyBirthday.DATA}}
-{{loveDay.DATA}}
+在一起{{Together.DATA}}天
+距离你的生日还有{{gridBirthday.DATA}}天
+距离我的的生日还有{{boyBirthday.DATA}}天
+纪念日{{loveDay.DATA}}
+
 {{word.DATA}}
 ```

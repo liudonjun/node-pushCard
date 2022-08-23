@@ -10,7 +10,7 @@ const templateIdOne = ''
 const sendUrl = 'https://api.weixin.qq.com/cgi-bin/message/template/send?access_token='
 const getTokenUrl = 'https://api.weixin.qq.com/cgi-bin/token'
 // 天气接口
-const weatherUrl = '天气接口'
+const weatherUrl = 'https://www.yiketianqi.com/free/day?appid=66282912&appsecret=K2gT5nXs&unescape=1'
 //错误返回
 const errorResponse = (res) => {
   return {
