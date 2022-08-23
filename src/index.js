@@ -1,6 +1,6 @@
 const { getAction, postAction } = require('./api/manage')
 let express = require('express')
-const { port, errorResponse, weatherUrl, grant_type, appid, secret, sendUrl, getTokenUrl, openId, templateIdOne, chpUrl } = require('./config/index')
+const { port, errorResponse, startStr,tip, centStr, weatherUrl, grant_type, appid, secret, sendUrl, getTokenUrl, openId, templateIdOne, chpUrl } = require('./config/index')
 const Dto = require('./config/Dto')
 const Birthday = require('./config/Birthday')
 const { getlunarDate, getDaysToBirthday, timeoutFunc } = require('./util/index')
@@ -34,19 +34,23 @@ const config = {
 function sendCard(flag) {
   Promise.all([p1, p3]).then(async ([res1, res3]) => {
     let obj = Object.create({})
-    obj['date'] = new Dto(res1.data.date, '#fff') //日期
-    obj['nong'] = new Dto('农历 ' + getlunarDate(date.getFullYear(), date.getMonth() + 1, date.getDate()), '#fff') //日期
-    obj['week'] = new Dto(res1.data.week, '#fff') //星期几
-    obj['city'] = new Dto(res1.data.city, '#fff') //城市
-    obj['wea'] = new Dto(res1.data.wea, '#fff') //天气
-    obj['tem'] = new Dto(res1.data.tem_night + '~' + res1.data.tem_day + '℃', '#ddd') //温度
-    obj['win'] = new Dto(res1.data.win + ` ${res1.data.win_speed} ${res1.data.win_meter}`, '#ddd') //风速
-    obj['humidity'] = new Dto(res1.data.humidity, '#ddd') //空气湿度
-    obj['word'] = new Dto(res3.data.data.text, '#ccc') //彩虹皮
-    obj['Together'] = new Dto(Math.ceil((new Date() - new Date('2022-8-16')) / 1000 / 60 / 60 / 24), '#fff') //在一起多少天
-    obj['gridBirthday'] = new Dto(new Birthday().getGridNumber(new Date().getFullYear()), '#fff') //baby
-    obj['boyBirthday'] = new Dto(new Birthday().getBoyNumber(new Date().getFullYear()), '#fff') //me
-    obj['loveDay'] = new Dto(getDaysToBirthday(8, 16), '#fff') //特殊日期
+    obj['start'] = new Dto(startStr, '#E591B4') //介绍
+    obj['cent'] = new Dto(centStr, '#e74c3c') //介绍
+    obj['date'] = new Dto(res1.data.date, '#e74c3c') //日期
+    obj['nong'] = new Dto('农历 ' + getlunarDate(date.getFullYear(), date.getMonth() + 1, date.getDate()), '#e74c3c') //日期
+    obj['week'] = new Dto(res1.data.week, '#e74c3c') //星期几
+    obj['city'] = new Dto(res1.data.city, '#e74c3c') //城市
+    obj['wea'] = new Dto(res1.data.wea, '#A83449') //天气
+    obj['tem'] = new Dto(res1.data.tem_night + '~' + res1.data.tem_day + '℃', '#64ADC7') //温度
+    obj['win'] = new Dto(res1.data.win + ` ${res1.data.win_speed} ${res1.data.win_meter}`, '#64ADC7') //风速
+    obj['humidity'] = new Dto(res1.data.humidity, '#64ADC7') //空气湿度
+    obj['word'] = new Dto(res3.data.data.text, '#502E8E') //彩虹皮
+    obj['know'] = new Dto(Math.ceil((new Date() - new Date('2021-12-31')) / 1000 / 60 / 60 / 24), '#A83449') //认识
+    obj['Together'] = new Dto(Math.ceil((new Date() - new Date('2022-8-16')) / 1000 / 60 / 60 / 24), '#A83449') //在一起多少天
+    obj['gridBirthday'] = new Dto(new Birthday().getGridNumber(new Date().getFullYear()), '#A83449') //baby
+    obj['boyBirthday'] = new Dto(new Birthday().getBoyNumber(new Date().getFullYear()), '#A83449') //me
+    obj['loveDay'] = new Dto(getDaysToBirthday(8, 16), '#A83449') //特殊日期
+    obj['tip']= new Dto(tip, '#dfabc1')
     const token = await getToken()
     let res = await postAction(sendUrl + token, {
       touser: openId, // 用户openid 3
@@ -55,6 +59,10 @@ function sendCard(flag) {
       data: obj,
     })
     console.log('res: ', res.data)
+    if (res.data.errmsg !== 'ok') {
+      // 失败重试
+      sendCard()
+    }
   })
 }
 

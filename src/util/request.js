@@ -1,7 +1,7 @@
 const axios = require("axios");
 
 const request = axios.create({
-  timeout: 9000,
+  timeout: 30000,
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
   },
