@@ -1,0 +1,19 @@
+{
+  "name": "pushCard",
+  "version": "1.0.0",
+  "description": "测试号推送卡片信息",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon src/index.js",
+    "prod": "pm2 start src/index.js"
+  },
+  "author": "3170495286@qq.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "express": "^4.18.1",
+    "localdate": "^3.0.2",
+    "moment": "^2.29.4",
+    "nodemon": "^2.0.19"
+  }
+}
