@@ -20,6 +20,9 @@ https://yiketianqi.com/index/doc?version=day
     npm run dev
 ```
 
+如果没有服务器可以选择云函数进行定时推送
+https://gitee.com/Coder-Jun/node-push-card
+
 #### 目录结构
 
 ```javascript
@@ -44,3 +47,6 @@ node-serve
 └─ yarn.lock
 
 ```
+
+### 效果预览
+<img src="./template/prev.png">

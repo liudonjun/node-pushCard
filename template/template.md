@@ -14,7 +14,7 @@
 现在是我们在一起的第{{Together.DATA}}天
 到现在我们认识已经{{know.DATA}}天啦
 距离小徐同学的生日还有{{gridBirthday.DATA}}天
-距离小刘同学的的生日还有{{boyBirthday.DATA}}天
+距离小刘同学的生日还有{{boyBirthday.DATA}}天
 距离我们的纪念日还有{{loveDay.DATA}}天
 
 {{word.DATA}}

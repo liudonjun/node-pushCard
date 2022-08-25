@@ -1,4 +1,4 @@
-const LocalDate = require("LocalDate");
+const LocalDate = require("localdate");
 module.exports = class Birthday {
   constructor(time) {
     this.time = time;

@@ -1,9 +1,10 @@
 const { getAction, postAction } = require('./api/manage')
 let express = require('express')
-const { port, errorResponse, startStr,tip, centStr, weatherUrl, grant_type, appid, secret, sendUrl, getTokenUrl, openId, templateIdOne, chpUrl } = require('./config/index')
+const moment = require('moment')
+const { port, errorResponse, startStr, tip, centStr, weatherUrl, grant_type, appid, secret, sendUrl, getTokenUrl, openId, templateIdOne, chpUrl } = require('./config/index')
 const Dto = require('./config/Dto')
 const Birthday = require('./config/Birthday')
-const { getlunarDate, getDaysToBirthday, timeoutFunc } = require('./util/index')
+const { getlunarDate, getDaysToBirthday, timeoutFunc,getWeek } = require('./util/index')
 let app = express()
 
 // 拦截器
@@ -20,25 +21,32 @@ app.all('*', function (req, res, next) {
 const p1 = getAction(weatherUrl, {})
 const p3 = getAction(chpUrl, {})
 
-// 日期对象
-const date = new Date()
-
 // 定时任务配置
 const config = {
   interval: 1, //间隔天数，间隔为整数
   runNow: true, //是否立即运行
-  time: '14:41:00', //执行的时间点 时在0~23之间
+  time: '08:30:00', //执行的时间点 时在0~23之间
+}
+
+function getDate(format) {
+  let date = new Date().toGMTString()
+  return moment(date).format(format)
+  // return moment(date).format('YYYY年MM月DD日 h:mm:ss a')
 }
 
 // 发送模板消息
 function sendCard(flag) {
   Promise.all([p1, p3]).then(async ([res1, res3]) => {
+    let date = new Date()
     let obj = Object.create({})
+    console.log(date)
+    console.log(res1.data.date)
     obj['start'] = new Dto(startStr, '#E591B4') //介绍
     obj['cent'] = new Dto(centStr, '#e74c3c') //介绍
-    obj['date'] = new Dto(res1.data.date, '#e74c3c') //日期
-    obj['nong'] = new Dto('农历 ' + getlunarDate(date.getFullYear(), date.getMonth() + 1, date.getDate()), '#e74c3c') //日期
-    obj['week'] = new Dto(res1.data.week, '#e74c3c') //星期几
+    obj['date'] = new Dto(getDate('YYYY年MM月DD日'), '#e74c3c') //日期
+    obj['nong'] = new Dto('农历 ' + getlunarDate(getDate('YYYY'), getDate('MM'), getDate('DD')), '#e74c3c') //日期
+    obj['week'] = new Dto(getWeek(date.getDay()), '#e74c3c') //星期几
+    // obj['week'] = new Dto(res1.data.week, '#e74c3c') //星期几
     obj['city'] = new Dto(res1.data.city, '#e74c3c') //城市
     obj['wea'] = new Dto(res1.data.wea, '#A83449') //天气
     obj['tem'] = new Dto(res1.data.tem_night + '~' + res1.data.tem_day + '℃', '#64ADC7') //温度
@@ -47,10 +55,14 @@ function sendCard(flag) {
     obj['word'] = new Dto(res3.data.data.text, '#502E8E') //彩虹皮
     obj['know'] = new Dto(Math.ceil((new Date() - new Date('2021-12-31')) / 1000 / 60 / 60 / 24), '#A83449') //认识
     obj['Together'] = new Dto(Math.ceil((new Date() - new Date('2022-8-16')) / 1000 / 60 / 60 / 24), '#A83449') //在一起多少天
+    // 农历生日
     obj['gridBirthday'] = new Dto(new Birthday().getGridNumber(new Date().getFullYear()), '#A83449') //baby
     obj['boyBirthday'] = new Dto(new Birthday().getBoyNumber(new Date().getFullYear()), '#A83449') //me
+    // 不过农历生日 可以用纪念日处理
+    // obj['gridBirthday'] = new Dto(getDaysToBirthday(8, 16), '#A83449') 
+    // obj['boyBirthday'] = new Dto(getDaysToBirthday(8, 16), '#A83449') 
     obj['loveDay'] = new Dto(getDaysToBirthday(8, 16), '#A83449') //特殊日期
-    obj['tip']= new Dto(tip, '#dfabc1')
+    obj['tip'] = new Dto(tip, '#dfabc1')
     const token = await getToken()
     let res = await postAction(sendUrl + token, {
       touser: openId, // 用户openid 3

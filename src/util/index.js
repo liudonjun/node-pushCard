@@ -1,3 +1,4 @@
+const moment = require('moment')
 function getDaysToBirthday(month, day) {
   var now = new Date()
   var thisYear = now.getFullYear()
@@ -269,11 +270,17 @@ function getlunarDate(year, month, day) {
   var s = lmonth + '月' + lday
   return s
 }
+function getWeek(number) {
+  let arr = ['日', '一', '二', '三', '四', '五', '六']
+  return `星期${arr[number]}`
+}
 function timeoutFunc(config, func) {
   config.runNow && func()
   let nowTime = new Date().getTime()
+  console.log(moment(nowTime).format('YYYY年MM月DD日 h:mm:ss a'))
   let timePoints = config.time.split(':').map((i) => parseInt(i))
   let recent = new Date().setHours(...timePoints)
+  console.log(moment(recent).format('YYYY年MM月DD日 h:mm:ss a'))
 
   recent >= nowTime || (recent += 24 * 3600000)
 
@@ -283,6 +290,7 @@ function timeoutFunc(config, func) {
   }, recent - nowTime)
 }
 module.exports = {
+  getWeek,
   timeoutFunc,
   getlunarDate,
   getDaysToBirthday,
